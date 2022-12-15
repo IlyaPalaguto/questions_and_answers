@@ -8,6 +8,8 @@ html
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    = flash[:notice]
-    = flash[:alert]
+    - if user_signed_in?
+      = link_to 'Log out', destroy_user_session_path, method: :delete
+    p= notice
+    p= alert
     = yield

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can view questions', %q{
+feature 'User can view list of the questions', %q{
   In order search solution for task
   I'd like to be able view questions
 } do
