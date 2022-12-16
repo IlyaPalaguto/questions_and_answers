@@ -2,7 +2,8 @@ FactoryBot.define do
   factory :answer do
     body { "AnswerTextBody" }
     title { "AnswerStringTitle" }
-    question { nil }
+    question { create(:question) }
+    author { create(:user) }
 
     trait :invalid do
       body { nil }

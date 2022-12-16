@@ -15,5 +15,7 @@ p= @question.body
   = f.submit 'Send'
 
 - @question.answers.each do |answer|
-  h1= answer.title
-  p= answer.body
+  - if answer.persisted?
+    h1= answer.title
+    p= answer.body
+    = link_to 'delete answer', answer_path(answer), method: :delete
