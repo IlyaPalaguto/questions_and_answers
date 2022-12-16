@@ -6,10 +6,11 @@ FactoryBot.define do
   factory :question do
     title
     body { "QuestionBodyText" }
+    author { create(:user) }
 
     trait :invalid do
-      title {nil}
-      body {nil}
+      title { nil }
+      body { nil }
     end
   end
 end
