@@ -4,6 +4,20 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
 
+  describe 'DELETE #destroy' do
+    let!(:question) { create(:question, author: user) }
+    before { login(user) }
+
+    it 'deletes the question' do
+      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+    end
+
+    it 'redirects to index' do
+      delete :destroy, params: { id: question }
+      expect(response).to redirect_to questions_path
+    end
+  end
+
   describe 'GET #edit' do
     before { login(user) }
     before { get :edit, params: { id: question } }

@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question, only: %i[show edit update delete]
+  before_action :set_question, only: %i[show edit update destroy]
 
   def new
     @question = current_user.questions.build
@@ -35,6 +35,15 @@ class QuestionsController < ApplicationController
       redirect_to question_path(@question), notice: 'Your question has been successfully edited.'
     else
       render :edit
+    end
+  end
+
+  def destroy
+    if current_user.questions.include?(@question)
+      @question.delete
+      redirect_to questions_path, notice: 'Your question has been successfully deleted.'
+    else
+      redirect_to question_path(@question), alert: 'You can delete just yours question.'
     end
   end
 
