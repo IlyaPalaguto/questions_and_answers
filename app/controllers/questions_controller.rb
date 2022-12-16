@@ -25,11 +25,14 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+    unless current_user.questions.include?(@question)
+      redirect_to question_path(@question), alert: 'You can edit just yours questions.'
+    end
   end
   
   def update
     if @question.update(question_params)
-      redirect_to question_path(@question)
+      redirect_to question_path(@question), notice: 'Your question has been successfully edited.'
     else
       render :edit
     end
