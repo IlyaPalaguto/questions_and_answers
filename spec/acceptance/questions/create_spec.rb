@@ -18,7 +18,7 @@ feature 'Just authenticated user can create question', %q{
     scenario 'create question' do
       fill_in 'Title', with: 'Title'
       fill_in 'Body', with: 'text text text'
-      click_on 'Ask'
+      click_on 'Create Question'
   
       expect(page).to have_content 'Your question successfully created.'
       expect(page).to have_content 'Title'
@@ -26,7 +26,7 @@ feature 'Just authenticated user can create question', %q{
     end
   
     scenario 'tries create question with errors' do
-      click_on 'Ask'
+      click_on 'Create Question'
   
       expect(page).to have_content "Title can't be blank"
     end

@@ -34,10 +34,6 @@ feature 'Just authenticated user can create answer', %q{
   scenario 'Unauthenticated user tries create answer' do
     visit question_path(question)
 
-    fill_in 'Title', with: 'Answer for question'
-    fill_in 'Body', with: 'answer answer answer'
-    click_on 'Send'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_no_button 'Send'
   end
 end

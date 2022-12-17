@@ -1,20 +1,21 @@
-h1= @question.title
-p= @question.body
-= link_to 'edit', edit_question_path(@question)
-= link_to 'delete', question_path(@question), method: :delete
+= render question
 
-=render 'shared/errors', resource: @answer
+= link_to 'edit', edit_question_path(question)
+= link_to 'delete', question_path(question), method: :delete
 
-= form_with model: @answer, url: question_answers_path(@question), method: :post, local: true do |f|
-  = f.label :title
-  = f.text_field :title
+- if current_user
+  =render 'shared/errors', resource: answer
 
-  = f.label :body
-  = f.text_area :body
+  = form_with model: answer, url: question_answers_path(question), method: :post, local: true do |f|
+    = f.label :title
+    = f.text_field :title
 
-  = f.submit 'Send'
+    = f.label :body
+    = f.text_area :body
 
-- @question.answers.each do |answer|
+    = f.submit 'Send'
+
+- question.answers.each do |answer|
   - if answer.persisted?
     h1= answer.title
     p= answer.body
