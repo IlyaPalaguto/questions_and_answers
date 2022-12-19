@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
   end
 
   def edit
-    unless current_user.questions.include?(question)
+    unless current_user.author_of?(question)
       redirect_to question_path(question), alert: 'You can edit just yours questions.'
     end
   end
@@ -25,7 +25,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.questions.include?(question)
+    if current_user.author_of?(question)
       question.delete
       redirect_to questions_path, notice: 'Your question has been successfully deleted.'
     else
