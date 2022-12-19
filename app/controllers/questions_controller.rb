@@ -1,12 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
 
-  expose :questions, ->{ Question.all }
-  expose :question, build: ->(question_params){ current_user.questions.build(question_params) }
-  expose :answer, build: ->{ question.answers.build }, id: ->{ params[:answer_id] }
-
   def create
-    if question.save
+    if question(question_params).save
       flash[:notice] = 'Your question successfully created.'
       redirect_to question
     else
@@ -38,6 +34,21 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def question(attributes = {})
+    @question ||= params[:id] ? Question.find(params[:id]) : current_user.questions.new(attributes)
+  end
+  helper_method :question
+
+  def questions
+    @questions = Question.all
+  end
+  helper_method :questions
+
+  def answer
+    @answer ||= question.answers.build
+  end
+  helper_method :answer
 
   def question_params
     params.require(:question).permit(:title, :body)

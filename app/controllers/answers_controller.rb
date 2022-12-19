@@ -1,14 +1,8 @@
 class AnswersController < ApplicationController
-  expose :answer, build: ->(answer_params) do
-    answer = question.answers.build(answer_params)
-    answer.author_id = current_user.id
-    answer
-  end
-  expose :question
-
   before_action :authenticate_user!
   
   def create
+    answer(answer_params).author_id = current_user.id
     if answer.save
       redirect_to answer.question, notice: 'Your answer successfully created'
     else
@@ -28,6 +22,16 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def question
+    @question ||= Question.find(params[:question_id])
+  end
+  helper_method :question
+
+  def answer(attributes = {})
+    @answer ||= params[:id] ? Answer.find(params[:id]) : question.answers.build(attributes)
+  end
+  helper_method :answer
 
   def answer_params
     params.require(:answer).permit(:title, :body)
